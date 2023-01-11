@@ -37,7 +37,7 @@ export class HeroService {
   }
 
   /**
-   * Handle Http operation that failed/
+   * Handle Http operation that failed.
    * Let the app continue.
    *
    * @param operation - name of the operation that failed
@@ -71,6 +71,15 @@ export class HeroService {
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
+    );
+  }
+
+  deleteHero(id: number): Observable<Hero> {
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
+      tap((_) => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
     );
   }
 }
